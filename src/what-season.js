@@ -4,6 +4,7 @@ module.exports = function getSeason(date) {
   if (date == null) {
     return 'Unable to determine the time of year!';
   }
+  let time = date.getTime();
   let month = date.getMonth();
   
   if ((month == 11) || (month <= 1)) {
