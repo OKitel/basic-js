@@ -8,7 +8,7 @@ module.exports = function repeater(str, options) {
   }
   options.addition += '';
   if (typeof options.repeatTimes == 'undefined') {
-    options.repeatTimes = 0;
+    options.repeatTimes = 1;
   }
   if (typeof options.additionRepeatTimes == 'undefined') {
     options.additionRepeatTimes = 0;
