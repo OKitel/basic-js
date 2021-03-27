@@ -19,10 +19,17 @@ module.exports = function repeater(str, options) {
   if (typeof options.additionSeparator == 'undefined') {
     options.additionSeparator = '|';
   }
+
   let addRep = options.additionRepeatTimes;
+
+  if (addRep == 0) {
+    addRep = 1;
+  } else if (addRep > 1) {
+    addRep--;
+  }  
   
   let addPlusSep = '';
-  if (options.additionRepeatTimes != 1) {
+  if (options.additionRepeatTimes > 1) {
 	addPlusSep = options.addition + options.additionSeparator;
   }
   let addition = addPlusSep.repeat(addRep) + options.addition;
