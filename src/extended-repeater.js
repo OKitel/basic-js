@@ -1,7 +1,38 @@
 const CustomError = require("../extensions/custom-error");
 
-module.exports = function repeater(/* str, options */) {
-  throw new CustomError('Not implemented');
-  // remove line with error and write your code here
+module.exports = function repeater(str, options) {
+  let result = '';
+  str += '';
+  if (typeof options.addition == 'undefined') {
+	options.addition = '';
+  }
+  options.addition += '';
+  if (typeof options.repeatTimes == 'undefined') {
+    options.repeatTimes = 0;
+  }
+  if (typeof options.additionRepeatTimes == 'undefined') {
+    options.additionRepeatTimes = 0;
+  }
+  if (typeof options.separator == 'undefined') {
+    options.separator = '+';
+  }
+  if (typeof options.additionSeparator == 'undefined') {
+    options.additionSeparator = '|';
+  }
+  let addRep = options.additionRepeatTimes;
+  
+  let addPlusSep = '';
+  if (options.additionRepeatTimes != 1) {
+	addPlusSep = options.addition + options.additionSeparator;
+  }
+  let addition = addPlusSep.repeat(addRep) + options.addition;
+  for (let i = 0; i < options.repeatTimes; i++){
+    result += (str + addition) + options.separator;
+  }
+  let separator1 = options.separator;
+  let sepLength = separator1.length;
+  let resLength = result.length;
+  let needLength = resLength - sepLength;
+  return result.slice(0,needLength);
 };
   
