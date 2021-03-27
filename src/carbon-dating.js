@@ -8,13 +8,19 @@ module.exports = function dateSample(sampleActivity) {
     return false;
   }
   
-  if (sampleActivity <= 0 || sampleActivity > 15) {
-    return false;
-  }
+  
 
   sampleActivity = +sampleActivity;
 
-  if (sampleActivity === 0) {
+  if (isNaN(sampleActivity)) {
+    return false;
+  }
+
+  if (sampleActivity < 0 || sampleActivity > 15) {
+    return false;
+  }
+
+  if (sampleActivity == 0) {
     return false;
   }
 
