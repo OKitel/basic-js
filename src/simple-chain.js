@@ -15,8 +15,13 @@ const chainMaker = {
   },
 
   removeLink (position) {
-    this.result.splice(position-1,1);
-    return this;
+    if (position < 0 || typeof position == 'string' || !Number.isInteger(position)) {
+      this.result.length = 0;
+      throw new Error();
+    } else {
+      this.result.splice(position-1,1);
+    }
+    return this;    
   },
 
   reverseChain () {
