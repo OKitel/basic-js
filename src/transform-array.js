@@ -5,6 +5,34 @@ module.exports = function transform(arr) {
     throw new Error();
   }
   let array = arr.slice();
+  for (let i = 0; i < array.length; i++) {
+    switch (i) {
+      case '--discard-next':
+        if (i == array.length - 1) {
+          array.splice(array[i],1);
+          break;
+        }
+        array.splice(array[i],2);
+      case '--discard-prev':
+        if (i == 0) {
+          array.splice(array[i],1);
+          break;
+        }
+        array.splice(array[i-1],2);
+      case '--double-next':
+        if (i == array.length - 1) {
+          array.splice(array[i],1);
+          break;
+        }
+        array.splice(array[i],1,array[i+1]);
+      case '--double-prev':
+        if (i == 0) {
+          array.splice(array[i],1);
+          break;
+        }
+        array.splice(array[i],1,array[i-1]);
+    }
+  }
 
   return array;
 };
