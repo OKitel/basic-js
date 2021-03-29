@@ -44,12 +44,6 @@ class VigenereCipheringMachine {
     keyWord = keyWord.repeat(maxLength).substring(0, maxLength);
     let code = [];
     let codeKey = [];
-    /*let spacePos = [];
-    for (let i = 0; i < maxLength; i++) {
-      if (msg[i] == " ") {
-        spacePos.push(i);
-      }
-    }*/
     let k = 0;
     for (let i = 0; i < maxLength; i++) {
       let numM = this.alphabet.indexOf(msg[i]);
@@ -85,18 +79,14 @@ class VigenereCipheringMachine {
       } else {
         result.push(resultNum[i]);
       }
-    } /*
-    for (let i = 0; i <= spacePos.length; i++) {
-      let space = spacePos[i];
-      result.splice(space, 0, " ");
-    }*/
+    }
     if (this._isReverse == true) {
       return result.reverse().join("");
     }
     return result.join("");
   };
 
-  decrypt(message, key) {
+  decrypt = function (message, key) {
     if (message == undefined || key == undefined) {
       throw new Error("Need 2 arguments");
     }
@@ -106,46 +96,49 @@ class VigenereCipheringMachine {
     keyWord = keyWord.repeat(maxLength).substring(0, maxLength);
     let code = [];
     let codeKey = [];
-    let spacePos = [];
-    for (let i = 0; i < maxLength; i++) {
-      if (msg[i] == " ") {
-        spacePos.push(i);
-      }
-    }
+    let k = 0;
     for (let i = 0; i < maxLength; i++) {
       let numM = this.alphabet.indexOf(msg[i]);
       if (numM != -1) {
         code.push(numM);
+      } else {
+        code.push(msg[i]);
+        k++;
       }
 
-      let numK = this.alphabet.indexOf(keyWord[i]);
+      let numK = this.alphabet.indexOf(keyWord[i - k]);
       if (numK != -1) {
         codeKey.push(numK);
       }
     }
     let resultNum = [];
     for (let i = 0; i < code.length; i++) {
-      let sum = code[i] - codeKey[i];
-      if (sum < 0) {
-        sum = code[i] - 26 + codeKey[i];
+      if (typeof code[i] == "number") {
+        let sum = code[i] - codeKey[i];
+        if (sum < 0) {
+          sum = code[i] + 26 - codeKey[i];
+        }
+        resultNum.push(sum);
+      } else {
+        resultNum.push(code[i]);
       }
-      resultNum.push(sum);
     }
+
     let result = [];
     for (let i = 0; i < resultNum.length; i++) {
-      let index = resultNum[i];
-      result.push(this.alphabet[index]);
-    }
-    for (let i = 0; i <= spacePos.length; i++) {
-      let space = spacePos[i];
-      result.splice(space, 0, " ");
+      if (typeof resultNum[i] == "number") {
+        let index = resultNum[i];
+        result.push(this.alphabet[index]);
+      } else {
+        result.push(resultNum[i]);
+      }
     }
 
     if (this._isReverse == true) {
       return result.reverse().join("");
     }
     return result.join("");
-  }
+  };
 }
 
 module.exports = VigenereCipheringMachine;
