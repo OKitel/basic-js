@@ -6,47 +6,44 @@ module.exports = function transform(arr) {
   }
   let array = arr.slice();
   let discarded = false;
-  let doubled = false;
   for (let i = 0; i < array.length; i++) {
     switch (array[i]) {
-      case '--discard-next':
+      case "--discard-next":
         if (i == array.length - 1 || discarded == true) {
-          array.splice(i,1);
+          array.splice(i, 1);
           break;
         }
-        array.splice(i,2);
+        array.splice(i, 2);
         discarded = true;
-		i = i - 1;
+        i = i - 1;
         break;
-      case '--discard-prev':
+      case "--discard-prev":
         if (i == 0 || discarded == true) {
-          array.splice(i,1);
+          array.splice(i, 1);
           break;
         }
-        array.splice(i-1,2);
+        array.splice(i - 1, 2);
         discarded = true;
-		i = i - 1;
+        i = i - 1;
         break;
-      case '--double-next':
+      case "--double-next":
         if (i == array.length - 1) {
-          array.splice(i,1);
+          array.splice(i, 1);
           break;
         }
-        array.splice(i,1,array[i+1]);
-        doubled = true;
+        array.splice(i, 1, array[i + 1]);
         break;
-      case '--double-prev':
+      case "--double-prev":
         if (i == 0) {
-          array.splice(i,1);
+          array.splice(i, 1);
           break;
         }
-		  if (discarded == true) {
-			array.splice(i,1);
-			break;
-		  }
-      array.splice(i,1,array[i-1]);
-       break;
-        
+        if (discarded == true) {
+          array.splice(i, 1);
+          break;
+        }
+        array.splice(i, 1, array[i - 1]);
+        break;
     }
   }
 
