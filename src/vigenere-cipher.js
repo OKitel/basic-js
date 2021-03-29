@@ -1,26 +1,150 @@
 const CustomError = require("../extensions/custom-error");
 
 class VigenereCipheringMachine {
-  alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  alphabet = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+  ];
 
-  constructor(type) {
-    if (type == true) {
-    }
+  constructor(isDirect = true) {
+    this._isReverse = !isDirect;
   }
 
-  encrypt(message, key) {
+  encrypt = function (message, key) {
     if (message == undefined || key == undefined) {
-      throw new Error();
+      throw new Error("Need 2 arguments");
     }
-    let code = message.toUpperCase();
-    let codeKey = key.toUpperCase();
-  }
+    let msg = message.toUpperCase().trim();
+    let keyWord = key.toUpperCase().replace(/\s/g, "");
+    let maxLength = Math.max(msg.length, keyWord.length);
+    keyWord = keyWord.repeat(maxLength).substring(0, maxLength);
+    let code = [];
+    let codeKey = [];
+    /*let spacePos = [];
+    for (let i = 0; i < maxLength; i++) {
+      if (msg[i] == " ") {
+        spacePos.push(i);
+      }
+    }*/
+    let k = 0;
+    for (let i = 0; i < maxLength; i++) {
+      let numM = this.alphabet.indexOf(msg[i]);
+      if (numM != -1) {
+        code.push(numM);
+      } else {
+        code.push(msg[i]);
+        k++;
+      }
+
+      let numK = this.alphabet.indexOf(keyWord[i - k]);
+      if (numK != -1) {
+        codeKey.push(numK);
+      }
+    }
+    let resultNum = [];
+    for (let i = 0; i < code.length; i++) {
+      if (typeof code[i] == "number") {
+        let sum = code[i] + codeKey[i];
+        if (sum > 25) {
+          sum = sum - 26;
+        }
+        resultNum.push(sum);
+      } else {
+        resultNum.push(code[i]);
+      }
+    }
+    let result = [];
+    for (let i = 0; i < resultNum.length; i++) {
+      if (typeof resultNum[i] == "number") {
+        let index = resultNum[i];
+        result.push(this.alphabet[index]);
+      } else {
+        result.push(resultNum[i]);
+      }
+    } /*
+    for (let i = 0; i <= spacePos.length; i++) {
+      let space = spacePos[i];
+      result.splice(space, 0, " ");
+    }*/
+    if (this._isReverse == true) {
+      return result.reverse().join("");
+    }
+    return result.join("");
+  };
+
   decrypt(message, key) {
     if (message == undefined || key == undefined) {
-      throw new Error();
+      throw new Error("Need 2 arguments");
     }
-    let code = message.toUpperCase();
-    let codeKey = key.toUpperCase();
+    let msg = message.toUpperCase().trim();
+    let keyWord = key.toUpperCase().replace(/\s/g, "");
+    let maxLength = Math.max(msg.length, keyWord.length);
+    keyWord = keyWord.repeat(maxLength).substring(0, maxLength);
+    let code = [];
+    let codeKey = [];
+    let spacePos = [];
+    for (let i = 0; i < maxLength; i++) {
+      if (msg[i] == " ") {
+        spacePos.push(i);
+      }
+    }
+    for (let i = 0; i < maxLength; i++) {
+      let numM = this.alphabet.indexOf(msg[i]);
+      if (numM != -1) {
+        code.push(numM);
+      }
+
+      let numK = this.alphabet.indexOf(keyWord[i]);
+      if (numK != -1) {
+        codeKey.push(numK);
+      }
+    }
+    let resultNum = [];
+    for (let i = 0; i < code.length; i++) {
+      let sum = code[i] - codeKey[i];
+      if (sum < 0) {
+        sum = code[i] - 26 + codeKey[i];
+      }
+      resultNum.push(sum);
+    }
+    let result = [];
+    for (let i = 0; i < resultNum.length; i++) {
+      let index = resultNum[i];
+      result.push(this.alphabet[index]);
+    }
+    for (let i = 0; i <= spacePos.length; i++) {
+      let space = spacePos[i];
+      result.splice(space, 0, " ");
+    }
+
+    if (this._isReverse == true) {
+      return result.reverse().join("");
+    }
+    return result.join("");
   }
 }
 
