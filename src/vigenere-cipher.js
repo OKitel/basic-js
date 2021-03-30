@@ -36,32 +36,30 @@ class VigenereCipheringMachine {
     if (message == undefined || key == undefined) {
       throw new Error("Need 2 arguments");
     }
-    let msg = message.toUpperCase();
+    const msg = message.toUpperCase();
     let keyWord = key.toUpperCase();
-    let maxLength = Math.max(msg.length, keyWord.length);
-    keyWord = keyWord.repeat(maxLength).substring(0, msg.length);
-    let code = [];
-    let codeKey = [];
-    let k = 0;
-    for (let i = 0; i < maxLength; i++) {
-      let numM = this.alphabet.indexOf(msg[i]);
+
+    keyWord = keyWord.repeat(msg.length).substring(0, msg.length);
+    const code = [];
+    const codeKey = [];
+    let spaceCount = 0;
+    for (let i = 0; i < msg.length; i++) {
+      const numM = this.alphabet.indexOf(msg[i]);
       if (numM != -1) {
         code.push(numM);
       } else {
         if (msg[i] == " ") {
-          code.push(msg[i]);
-          k++;
-        } else {
-          code.push(msg[i]);
+          spaceCount++;
         }
+        code.push(msg[i]);
       }
 
-      let numK = this.alphabet.indexOf(keyWord[i - k]);
+      const numK = this.alphabet.indexOf(keyWord[i - spaceCount]);
       if (numK != -1) {
         codeKey.push(numK);
       }
     }
-    let resultNum = [];
+    const resultNum = [];
     for (let i = 0; i < code.length; i++) {
       if (typeof code[i] == "number") {
         let sum = code[i] + codeKey[i];
@@ -73,16 +71,16 @@ class VigenereCipheringMachine {
         resultNum.push(code[i]);
       }
     }
-    let result = [];
+    const result = [];
     for (let i = 0; i < resultNum.length; i++) {
       if (typeof resultNum[i] == "number") {
-        let index = resultNum[i];
+        const index = resultNum[i];
         result.push(this.alphabet[index]);
       } else {
         result.push(resultNum[i]);
       }
     }
-    if (this._isReverse == true) {
+    if (this._isReverse) {
       return result.reverse().join("");
     }
     return result.join("");
@@ -92,32 +90,29 @@ class VigenereCipheringMachine {
     if (message == undefined || key == undefined) {
       throw new Error("Need 2 arguments");
     }
-    let msg = message.toUpperCase();
+    const msg = message.toUpperCase();
     let keyWord = key.toUpperCase();
-    let maxLength = Math.max(msg.length, keyWord.length);
-    keyWord = keyWord.repeat(maxLength).substring(0, msg.length);
-    let code = [];
-    let codeKey = [];
-    let k = 0;
-    for (let i = 0; i < maxLength; i++) {
-      let numM = this.alphabet.indexOf(msg[i]);
+    keyWord = keyWord.repeat(msg.length).substring(0, msg.length);
+    const code = [];
+    const codeKey = [];
+    let spaceCount = 0;
+    for (let i = 0; i < msg.length; i++) {
+      const numM = this.alphabet.indexOf(msg[i]);
       if (numM != -1) {
         code.push(numM);
       } else {
         if (msg[i] == " ") {
-          code.push(msg[i]);
-          k++;
-        } else {
-          code.push(msg[i]);
+          spaceCount++;
         }
+        code.push(msg[i]);
       }
 
-      let numK = this.alphabet.indexOf(keyWord[i - k]);
+      const numK = this.alphabet.indexOf(keyWord[i - spaceCount]);
       if (numK != -1) {
         codeKey.push(numK);
       }
     }
-    let resultNum = [];
+    const resultNum = [];
     for (let i = 0; i < code.length; i++) {
       if (typeof code[i] == "number") {
         let sum = code[i] - codeKey[i];
@@ -130,17 +125,17 @@ class VigenereCipheringMachine {
       }
     }
 
-    let result = [];
+    const result = [];
     for (let i = 0; i < resultNum.length; i++) {
       if (typeof resultNum[i] == "number") {
-        let index = resultNum[i];
+        const index = resultNum[i];
         result.push(this.alphabet[index]);
       } else {
         result.push(resultNum[i]);
       }
     }
 
-    if (this._isReverse == true) {
+    if (this._isReverse) {
       return result.reverse().join("");
     }
     return result.join("");
