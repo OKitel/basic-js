@@ -1,5 +1,3 @@
-const CustomError = require("../extensions/custom-error");
-
 class VigenereCipheringMachine {
   alphabet = [
     "A",
@@ -38,10 +36,10 @@ class VigenereCipheringMachine {
     if (message == undefined || key == undefined) {
       throw new Error("Need 2 arguments");
     }
-    let msg = message.toUpperCase().trim();
-    let keyWord = key.toUpperCase().replace(/\s/g, "");
+    let msg = message.toUpperCase();
+    let keyWord = key.toUpperCase();
     let maxLength = Math.max(msg.length, keyWord.length);
-    keyWord = keyWord.repeat(maxLength).substring(0, maxLength);
+    keyWord = keyWord.repeat(maxLength).substring(0, msg.length);
     let code = [];
     let codeKey = [];
     let k = 0;
@@ -50,8 +48,12 @@ class VigenereCipheringMachine {
       if (numM != -1) {
         code.push(numM);
       } else {
-        code.push(msg[i]);
-        k++;
+        if (msg[i] == " ") {
+          code.push(msg[i]);
+          k++;
+        } else {
+          code.push(msg[i]);
+        }
       }
 
       let numK = this.alphabet.indexOf(keyWord[i - k]);
@@ -90,10 +92,10 @@ class VigenereCipheringMachine {
     if (message == undefined || key == undefined) {
       throw new Error("Need 2 arguments");
     }
-    let msg = message.toUpperCase().trim();
-    let keyWord = key.toUpperCase().replace(/\s/g, "");
+    let msg = message.toUpperCase();
+    let keyWord = key.toUpperCase();
     let maxLength = Math.max(msg.length, keyWord.length);
-    keyWord = keyWord.repeat(maxLength).substring(0, maxLength);
+    keyWord = keyWord.repeat(maxLength).substring(0, msg.length);
     let code = [];
     let codeKey = [];
     let k = 0;
@@ -102,8 +104,12 @@ class VigenereCipheringMachine {
       if (numM != -1) {
         code.push(numM);
       } else {
-        code.push(msg[i]);
-        k++;
+        if (msg[i] == " ") {
+          code.push(msg[i]);
+          k++;
+        } else {
+          code.push(msg[i]);
+        }
       }
 
       let numK = this.alphabet.indexOf(keyWord[i - k]);
