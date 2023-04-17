@@ -14,7 +14,9 @@ function getSeason(date) {
     return 'Unable to determine the time of year!';
   }
 
-  if (Object.prototype.toString.call(date) !== '[object Date]' || isNaN(date)) {
+  try {
+    date.getUTCDay();
+  } catch (err) {
     throw new Error('Invalid date!');
   }
 
